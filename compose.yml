@@ -1,0 +1,41 @@
+#docker compose file for my php and sql app
+version: '3.1'
+services:
+  db:
+    image: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+      - /home/srvadmin/Projects/ETMS/task_management_db.sql:/docker-entrypoint-initdb.d/task_management_db.sql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: task_management_db
+    networks:
+      - app-network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "80:80"
+    restart: always
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_DEFUALT_SERVER: db  
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  db_data:
+  
