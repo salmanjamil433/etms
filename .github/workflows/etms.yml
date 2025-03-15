@@ -39,4 +39,5 @@ jobs:
     - name: Run Docker Compose
       run: |
         ls -la
+        newgrp docker
         docker compose up -d --build
