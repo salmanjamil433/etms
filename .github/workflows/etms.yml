@@ -1,0 +1,44 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: self-hosted  # Self-hosted runner ka use karne ke liye update
+
+    steps:
+    - name: Check if Docker is installed
+      run: |
+        if ! command -v docker &> /dev/null
+        then
+          echo "Docker not found, installing..."
+          sudo apt update
+          sudo apt install -y docker.io
+          sudo systemctl enable --now docker
+          sudo usermod -aG docker $USER
+          echo "Docker installed successfully."
+        else
+          echo "Docker is already installed."
+        fi
+
+    - name: Verify Docker Installation
+      run: docker --version
+
+    - uses: actions/checkout@v4
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+    - name: Clone the repository and navigate
+      run: |
+        git clone https://github.com/salmanjamil433/etms.git repo
+        cd repo
+
+    - name: Run Docker Compose
+      run: |
+        cd repo
+        docker compose up -d --build
