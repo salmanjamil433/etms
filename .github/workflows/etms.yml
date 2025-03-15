@@ -5,9 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: self-hosted  # Self-hosted runner ka use karne ke liye update
 
     steps:
@@ -25,12 +23,22 @@ jobs:
           echo "Docker is already installed."
         fi
 
+    - name: Check if Docker Compose is installed
+      run: |
+        if ! command -v docker compose &> /dev/null
+        then
+          echo "Docker Compose not found, installing..."
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          echo "Docker Compose installed successfully."
+        else
+          echo "Docker Compose is already installed."
+        fi
+
     - name: Verify Docker Installation
       run: docker --version
 
     - uses: actions/checkout@v4
-
-    
 
     - name: Clone the repository and navigate
       run: |
