@@ -9,31 +9,22 @@ jobs:
     runs-on: self-hosted  # Self-hosted runner ka use karne ke liye update
 
     steps:
-    - name: Check if Docker is installed
+    - name: Remove existing Docker packages
       run: |
-        if ! command -v docker &> /dev/null
-        then
-          echo "Docker not found, installing..."
-          sudo apt update
-          sudo apt install -y docker.io
-          sudo systemctl enable --now docker
-          sudo usermod -aG docker $USER
-          echo "Docker installed successfully."
-        else
-          echo "Docker is already installed."
-        fi
+        for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
+          sudo apt-get remove -y $pkg
+        done
+        echo "Existing Docker packages removed."
 
-    - name: Check if Docker Compose is installed
+    - name: Install Docker using official script
       run: |
-        if ! command -v docker compose &> /dev/null
-        then
-          echo "Docker Compose not found, installing..."
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          echo "Docker Compose installed successfully."
-        else
-          echo "Docker Compose is already installed."
-        fi
+        curl -fsSL https://get.docker.com | sh
+        echo "Docker installed successfully."
+
+    - name: Add user to Docker group
+      run: |
+        sudo usermod -aG docker $USER
+        echo "User added to Docker group."
 
     - name: Verify Docker Installation
       run: docker --version
