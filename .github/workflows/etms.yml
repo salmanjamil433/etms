@@ -13,7 +13,7 @@ jobs:
       run: |
         ssh srvadmin@10.100.150.13 << 'EOF'
           cd ~
-          
+
           # Clone repo if not exists, else pull latest changes
           if [ -d "repo" ]; then
             cd repo && git pull
@@ -21,8 +21,7 @@ jobs:
             git clone https://github.com/salmanjamil433/etms.git repo
             cd repo
           fi
-          
-          # Run Docker Compose with dynamic file path
-          docker compose up -d --build \
-            -v $(pwd)/task_management_db.sql:/docker-entrypoint-initdb.d/task_management_db.sql
+
+          # Run Docker Compose (REMOVED the incorrect `-v` flag)
+          docker compose up -d --build
         EOF
