@@ -5,7 +5,7 @@ services:
     image: mariadb
     volumes:
       - db_data:/var/lib/mysql
-      - /home/srvadmin/Projects/ETMS/task_management_db.sql:/docker-entrypoint-initdb.d/task_management_db.sql
+      - /home/srvadmin/repo/task_management_db.sql:/docker-entrypoint-initdb.d/task_management_db.sql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
