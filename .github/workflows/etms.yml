@@ -22,6 +22,6 @@ jobs:
             cd repo
           fi
 
-          # Run Docker Compose (REMOVED the incorrect `-v` flag)
+          # Run Docker Compose 
           docker compose up -d --build
         EOF
