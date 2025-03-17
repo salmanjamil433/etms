@@ -13,7 +13,7 @@ jobs:
       run: |
         ssh srvadmin@10.100.150.13 << 'EOF'
           cd ~
-
+          ls -la
           # Clone repo if not exists, else pull latest changes
           if [ -d "repo" ]; then
             cd repo && git pull
