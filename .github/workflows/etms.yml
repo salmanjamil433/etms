@@ -9,16 +9,11 @@ jobs:
     runs-on: self-hosted  # Self-hosted runner ka use karne ke liye update
 
     steps:
-    - name: SSH into Server
-      run: ssh srvadmin@10.100.150.13 "echo 'SSH connection established'"
-
-    - uses: actions/checkout@v4
-
-    - name: Clone the repository and navigate
+    - name: SSH into Server and Execute Commands
       run: |
-        git clone https://github.com/salmanjamil433/etms.git repo
-        cd repo
-
-    - name: Run Docker Compose
-      run: |
-        docker compose up -d --build
+        ssh srvadmin@10.100.150.13 << 'EOF'
+          cd ~
+          git clone https://github.com/salmanjamil433/etms.git repo || (cd repo && git pull)
+          cd repo
+          docker compose up -d --build
+        EOF
