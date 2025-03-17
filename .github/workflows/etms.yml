@@ -9,25 +9,8 @@ jobs:
     runs-on: self-hosted  # Self-hosted runner ka use karne ke liye update
 
     steps:
-    - name: Remove existing Docker packages
-      run: |
-        for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
-          sudo apt-get remove -y $pkg
-        done
-        echo "Existing Docker packages removed."
-
-    - name: Install Docker using official script
-      run: |
-        curl -fsSL https://get.docker.com | sh
-        echo "Docker installed successfully."
-
-    - name: Add user to Docker group
-      run: |
-        sudo usermod -aG docker $USER
-        echo "User added to Docker group."
-
-    - name: Verify Docker Installation
-      run: docker --version
+    - name: SSH into Server
+      run: ssh srvadmin@10.100.150.13 "echo 'SSH connection established'"
 
     - uses: actions/checkout@v4
 
@@ -38,6 +21,4 @@ jobs:
 
     - name: Run Docker Compose
       run: |
-        ls -la
-        newgrp docker
         docker compose up -d --build
