@@ -36,7 +36,7 @@
 		    <input type="text" class="form-control" name="user_name">
 		  </div>
 		  <div class="mb-3">
-		    <label for="exampleInputPassword1" class="form-label">Password</label>
+		    <label for="exampleInputPassword1" class="form-label">Password (Use Strong Password)</label>
 		    <input type="password" class="form-control" name="password" id="exampleInputPassword1">
 		  </div>
 		  <button type="submit" class="btn btn-primary">Login</button>
